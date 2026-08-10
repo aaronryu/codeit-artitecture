@@ -1,5 +1,6 @@
 package com.example.demo.repository.payment;
 
+import com.example.demo.repository.IRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -14,19 +15,22 @@ import java.util.*;
  *      - D : 단일 삭제
  */
 @Repository
-public class PaymentRepository {
+public class PaymentRepository implements IRepository<Integer, Payment> {
     private final static Map<Integer, Payment> PAYMENTS = new HashMap<>();
 
+    @Override
     // R 전체 조회
     public List<Payment> findAll() {
         return PAYMENTS.values().stream().toList();
     }
 
+    @Override
     // R 단일 조회
     public Optional<Payment> findById(Integer id) {
         return Optional.ofNullable(PAYMENTS.get(id));
     }
 
+    @Override
     // C 단일 생성
     public Optional<Payment> create(Payment entity) {
         int id = entity.getId();
@@ -37,6 +41,7 @@ public class PaymentRepository {
         return Optional.ofNullable(created);
     }
 
+    @Override
     // U 단일 갱신
     public Optional<Payment> update(Payment entity) {
         int id = entity.getId();
@@ -47,8 +52,9 @@ public class PaymentRepository {
         return Optional.ofNullable(updated);
     }
 
+    @Override
     // D 단일 삭제
-    public void remove(Integer id) {
+    public void delete(Integer id) {
         if (Objects.isNull(PAYMENTS.get(id))) {
             throw new RuntimeException("기존에 해당 아이디를 가진 결제가 존재하지 않습니다 - id : " + id);
         }

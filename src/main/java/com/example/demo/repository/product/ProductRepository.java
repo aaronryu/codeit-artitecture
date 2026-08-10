@@ -1,5 +1,6 @@
 package com.example.demo.repository.product;
 
+import com.example.demo.repository.IRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -13,19 +14,22 @@ import java.util.*;
  *      - D : 단일 삭제
  */
 @Repository
-public class ProductRepository {
+public class ProductRepository implements IRepository<Integer, Product> {
     private final static Map<Integer, Product> PRODUCTS = new HashMap<>();
 
+    @Override
     // R 전체 조회
     public List<Product> findAll() {
         return PRODUCTS.values().stream().toList();
     }
 
+    @Override
     // R 단일 조회
     public Optional<Product> findById(Integer id) {
         return Optional.ofNullable(PRODUCTS.get(id));
     }
 
+    @Override
     // C 단일 생성
     public Optional<Product> create(Product entity) {
         int id = entity.getId();
@@ -36,8 +40,20 @@ public class ProductRepository {
         return Optional.ofNullable(created);
     }
 
+    @Override
+    // U 단일 갱신
+    public Optional<Product> update(Product entity) {
+        int id = entity.getId();
+        if (Objects.isNull(PRODUCTS.get(id))) {
+            throw new RuntimeException("기존에 해당 아이디를 가진 상품이 존재하지 않습니다 - id : " + id);
+        }
+        Product updated = PRODUCTS.replace(id, entity);
+        return Optional.ofNullable(updated);
+    }
+
+    @Override
     // D 단일 삭제
-    public void remove(Integer id) {
+    public void delete(Integer id) {
         if (Objects.isNull(PRODUCTS.get(id))) {
             throw new RuntimeException("기존에 해당 아이디를 가진 상품이 존재하지 않습니다 - id : " + id);
         }
