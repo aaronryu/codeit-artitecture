@@ -29,6 +29,13 @@ public class Product extends BaseEntity {
         return new Product(generatedId, name, price, stock, userId);
     }
 
+    public void update(String name, int price, int stock) {
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        super.updated();
+    }
+
     public void buyable() {
         if (this.stock < 1) {
             throw new RuntimeException("구매하시려는 상품의 재고가 존재하지 않습니다 - product: " + this.toString());
