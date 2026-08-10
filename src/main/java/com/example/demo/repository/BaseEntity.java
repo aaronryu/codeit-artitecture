@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * BaseEntity
@@ -48,7 +49,7 @@ public abstract class BaseEntity {
      *  + currentUserId - 어떤 유저가 값을 바꿨는지 추적하기 위함 <- Auditing
      */
     protected void updated() {
-        Integer currentUserId = UserContext.getUserId(); /* 누가 구매를 하였는지 */
+        Integer currentUserId = Optional.ofNullable(UserContext.getUserId()).orElse(this.createdBy); /* 누가 구매를 하였는지 */
         this.updatedAt = LocalDateTime.now();
         this.updatedBy = currentUserId;
     }
