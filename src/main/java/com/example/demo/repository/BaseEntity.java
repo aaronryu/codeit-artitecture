@@ -53,4 +53,14 @@ public abstract class BaseEntity {
         this.updatedAt = LocalDateTime.now();
         this.updatedBy = currentUserId;
     }
+
+    public void delete() {
+        this.deleted = true;
+        this.updated();
+    }
+
+    public void active() {
+        this.deleted = false;
+        this.updated();
+    }
 }

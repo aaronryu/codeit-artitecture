@@ -26,6 +26,13 @@ public class User extends BaseEntity {
         return new User(generatedId, name, userId);
     }
 
+    public void update(String name, UserGrade grade, int point) {
+        this.name = name;
+        this.grade = grade;
+        this.point = point;
+        super.updated();
+    }
+
     public void earn(int paidPrice) {
         this.point += (int) (paidPrice * this.grade.getEarningRate());
     }
