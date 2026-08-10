@@ -2,7 +2,10 @@ package com.example.demo.repository.product;
 
 import com.example.demo.repository.BaseEntity;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@ToString(callSuper = true)
 @Getter
 public class Product extends BaseEntity {
     private static int PRODUCT_CURRENT_ID = 0;
@@ -12,6 +15,7 @@ public class Product extends BaseEntity {
 
     private String name;
     private int price;
+    @Setter
     private int stock;
 
     private Product(Integer id, String name, int price, int stock, Integer userId) {

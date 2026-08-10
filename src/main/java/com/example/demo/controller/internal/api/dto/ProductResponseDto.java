@@ -1,4 +1,4 @@
-package com.example.demo.internal.api.dto;
+package com.example.demo.controller.internal.api.dto;
 
 import com.example.demo.repository.product.Product;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.example.demo.controller.internal.api;
 
-import com.example.demo.internal.api.dto.ProductResponseDto;
+import com.example.demo.controller.internal.api.dto.ProductResponseDto;
 import com.example.demo.repository.product.Product;
 import com.example.demo.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;

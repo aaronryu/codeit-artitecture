@@ -2,7 +2,9 @@ package com.example.demo.repository.user;
 
 import com.example.demo.repository.BaseEntity;
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString(callSuper = true)
 @Getter
 public class User extends BaseEntity {
     private static int USER_CURRENT_ID = 0;

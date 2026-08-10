@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
  *  - updatedAt : 언제 '갱신'되었는가?
  *  - updatedBy : 누가 '갱신'하였는가?
  */
+@ToString
 @Getter
 // public class BaseEntity { -> BaseEntity 는 개별적인 객체로 생성(new BaseEntity(...))되어서는 안됨! 단순히 템플릿 클래스로의 역할만 수행하도록
 public abstract class BaseEntity {
