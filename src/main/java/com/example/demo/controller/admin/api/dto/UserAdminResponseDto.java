@@ -2,8 +2,10 @@ package com.example.demo.controller.admin.api.dto;
 
 import com.example.demo.repository.user.User;
 import com.example.demo.repository.user.UserGrade;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public class UserAdminResponseDto {
     private final Integer id;

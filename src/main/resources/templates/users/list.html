@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users List Page</title>
+</head>
+<body>
+    <h1>Users List Page</h1>
+    <div>Here is users list</div>
+    <ul>
+        <li th:each="user:${users}">
+            name : <span th:text="${user.name}"></span> | grade : <span th:text="${user.grade}"></span> | point : <span th:text="${user.point}"></span> | deleted : <span th:text="${user.deleted}"></span>
+        </li>
+    </ul>
+</body>
+</html>
