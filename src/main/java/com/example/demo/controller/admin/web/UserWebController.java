@@ -1,5 +1,7 @@
 package com.example.demo.controller.admin.web;
 
+import com.example.demo.repository.user.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -11,5 +13,7 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 // 페이지만을 제공할것이라서 각 메서드마다 @ResponseBody 가 필요없음 - JSON 반환이 아니라 HTML 반환임
+@RequiredArgsConstructor
 public class UserWebController {
+    private final UserRepository userRepository;
 }
