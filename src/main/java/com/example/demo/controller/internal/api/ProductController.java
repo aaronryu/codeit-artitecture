@@ -1,5 +1,6 @@
 package com.example.demo.controller.internal.api;
 
+import com.example.demo.application.product.ProductApplication;
 import com.example.demo.controller.internal.api.dto.ProductResponseDto;
 import com.example.demo.repository.product.Product;
 import com.example.demo.repository.product.ProductRepository;
@@ -25,15 +26,15 @@ import java.util.Optional;
 // -> 클래스에 @RestController 적으면 = 각각의 메서드에 @ResponseBody 안적어줘도됨
 @RequiredArgsConstructor
 public class ProductController {
-    private final ProductService productService;
+    private final ProductApplication productApplication;
 
     @RequestMapping(method = RequestMethod.GET, value = "/internal/api/products")
     public List<ProductResponseDto> retrieve() {
-        return productService.retrieve();
+        return productApplication.retrieve();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/internal/api/products/{id}")
     public ProductResponseDto retrieve(@PathVariable Integer id) {
-        return productService.retrieve(id);
+        return productApplication.retrieve(id);
     }
 }

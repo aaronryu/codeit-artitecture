@@ -1,5 +1,6 @@
 package com.example.demo.controller.internal.api;
 
+import com.example.demo.application.payment.PaymentApplication;
 import com.example.demo.controller.internal.api.dto.PaymentCreateRequestDto;
 import com.example.demo.controller.internal.api.dto.PaymentResponseDto;
 import com.example.demo.controller.internal.api.dto.RequestingUserDto;
@@ -29,18 +30,18 @@ import java.util.Optional;
 // -> 클래스에 @RestController 적으면 = 각각의 메서드에 @ResponseBody 안적어줘도됨
 @RequiredArgsConstructor
 public class PaymentController {
-    private final PaymentService paymentService;
+    private final PaymentApplication paymentApplication;
 
     @RequestMapping(method = RequestMethod.POST, value = "/internal/api/payments")
     public PaymentResponseDto payment(@RequestBody PaymentCreateRequestDto request) {
         Integer requestedUserId = request.getRequestUserId();
         List<Integer> productIds = request.getProductIds();
-        return paymentService.payment(productIds, requestedUserId);
+        return paymentApplication.payment(productIds, requestedUserId);
     }
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/internal/api/payments/{id}/cancel")
     public PaymentResponseDto cancel(@PathVariable Integer id, @RequestBody RequestingUserDto request) {
         Integer requestedUserId = request.getRequestUserId();
-        return paymentService.cancel(id, requestedUserId);
+        return paymentApplication.cancel(id, requestedUserId);
     }
 }
