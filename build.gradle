@@ -18,12 +18,15 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//	runtimeOnly 'org.postgresql:postgresql'
+
+	//	SLF4J 설정해야지 로그 출력 가능
+	implementation 'org.slf4j:slf4j-api:2.0.13'
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
