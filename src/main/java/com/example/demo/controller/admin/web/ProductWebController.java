@@ -1,8 +1,15 @@
 package com.example.demo.controller.admin.web;
 
-import com.example.demo.repository.product.ProductRepository;
+import com.example.demo.application.product.ProductAdminApplication;
+import com.example.demo.controller.admin.api.dto.ProductAdminResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * ProductWebController
@@ -15,5 +22,23 @@ import org.springframework.stereotype.Controller;
 // 페이지만을 제공할것이라서 각 메서드마다 @ResponseBody 가 필요없음 - JSON 반환이 아니라 HTML 반환임
 @RequiredArgsConstructor
 public class ProductWebController {
-    private final ProductRepository productRepository;
+    private final ProductAdminApplication productAdminApplication;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/admin/web/products")
+    public String products(Model model) {
+        List<ProductAdminResponseDto> products = productAdminApplication.retrieve();
+        model.addAttribute("products", products);
+        return "/products/list";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/admin/web/products/{id}")
+    public String product(@RequestParam Integer id, Model model) {
+        ProductAdminResponseDto product = productAdminApplication.retrieve(id);
+        model.addAttribute("id", product.getId());
+        model.addAttribute("name", product.getName());
+        model.addAttribute("price", product.getPrice());
+        model.addAttribute("stock", product.getStock());
+        model.addAttribute("deleted", product.isDeleted());
+        return "/products/detail";
+    }
 }

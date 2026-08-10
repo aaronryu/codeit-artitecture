@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Detail Information Page</title>
+</head>
+<body>
+    <h1>Product Detail Information (ProductId: <span th:text="${id}"></span>)</h1>
+    <div>Here is an product detail information</div>
+    <div>- name : <span th:text="${name}"></span></div>
+    <div>- price : <span th:text="${price}"></span></div>
+    <div>- stock : <span th:text="${stock}"></span></div>
+    <div>- deleted : <span th:text="${deleted}"></span></div>
+</body>
+</html>
