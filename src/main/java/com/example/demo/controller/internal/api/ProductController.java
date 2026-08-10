@@ -3,6 +3,7 @@ package com.example.demo.controller.internal.api;
 import com.example.demo.controller.internal.api.dto.ProductResponseDto;
 import com.example.demo.repository.product.Product;
 import com.example.demo.repository.product.ProductRepository;
+import com.example.demo.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,21 +25,15 @@ import java.util.Optional;
 // -> 클래스에 @RestController 적으면 = 각각의 메서드에 @ResponseBody 안적어줘도됨
 @RequiredArgsConstructor
 public class ProductController {
-    private final ProductRepository productRepository;
+    private final ProductService productService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/internal/api/products")
     public List<ProductResponseDto> retrieve() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
-                .map(ProductResponseDto::from)
-                .toList();
+        return productService.retrieve();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/internal/api/products/{id}")
     public ProductResponseDto retrieve(@PathVariable Integer id) {
-        Optional<Product> wrappedProduct = productRepository.findById(id);
-                 Product         product = wrappedProduct
-                         .orElseThrow(() -> new RuntimeException("찾으시는 유저가 존재하지 않습니다"));
-        return ProductResponseDto.from(product);
+        return productService.retrieve(id);
     }
 }
