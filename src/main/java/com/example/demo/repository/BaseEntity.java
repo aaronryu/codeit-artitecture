@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.common.context.UserContext;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -44,10 +45,11 @@ public abstract class BaseEntity {
     /**
      * BaseEntity (템플릿) 추상클래스 상속받는 엔티티 내 필드들이 수정되었을때 누가, 언제 바꿨는지 기록
      *  - 중요 ! 이번 예시에서는 필드가 갱신되는 엔티티는 Payment 하나에서만 발생하는것으로 진행할 것 !
-     * @param userId - 어떤 유저가 값을 바꿨는지 추적하기 위함 <- Auditing
+     *  + currentUserId - 어떤 유저가 값을 바꿨는지 추적하기 위함 <- Auditing
      */
-    protected void updated(Integer userId) {
+    protected void updated() {
+        Integer currentUserId = UserContext.getUserId(); /* 누가 구매를 하였는지 */
         this.updatedAt = LocalDateTime.now();
-        this.updatedBy = userId;
+        this.updatedBy = currentUserId;
     }
 }

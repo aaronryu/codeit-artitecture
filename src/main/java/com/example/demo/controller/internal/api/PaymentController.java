@@ -2,6 +2,7 @@ package com.example.demo.controller.internal.api;
 
 import com.example.demo.application.payment.IPaymentApplication;
 import com.example.demo.application.payment.PaymentApplication;
+import com.example.demo.common.context.UserContext;
 import com.example.demo.controller.internal.api.dto.PaymentCreateRequestDto;
 import com.example.demo.controller.internal.api.dto.PaymentResponseDto;
 import com.example.demo.controller.internal.api.dto.RequestingUserDto;
@@ -44,12 +45,16 @@ public class PaymentController {
     public PaymentResponseDto payment(@RequestBody PaymentCreateRequestDto request) {
         Integer requestedUserId = request.getRequestUserId();
         List<Integer> productIds = request.getProductIds();
-        return paymentApplication.payment(productIds, requestedUserId);
+        try (UserContext.ContextScope ignored = UserContext.withUser(requestedUserId)) {
+            return paymentApplication.payment(productIds);
+        }
     }
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/internal/api/payments/{id}/cancel")
     public PaymentResponseDto cancel(@PathVariable Integer id, @RequestBody RequestingUserDto request) {
         Integer requestedUserId = request.getRequestUserId();
-        return paymentApplication.cancel(id, requestedUserId);
+        try (UserContext.ContextScope ignored = UserContext.withUser(requestedUserId)) {
+            return paymentApplication.cancel(id);
+        }
     }
 }
