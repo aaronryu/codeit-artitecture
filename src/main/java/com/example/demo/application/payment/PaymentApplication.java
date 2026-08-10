@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class PaymentApplication {
+public class PaymentApplication implements IPaymentApplication {
     private final PaymentService paymentService;
     private final ProductService productService;
 

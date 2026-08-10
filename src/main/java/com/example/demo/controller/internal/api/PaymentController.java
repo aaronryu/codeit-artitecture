@@ -1,5 +1,6 @@
 package com.example.demo.controller.internal.api;
 
+import com.example.demo.application.payment.IPaymentApplication;
 import com.example.demo.application.payment.PaymentApplication;
 import com.example.demo.controller.internal.api.dto.PaymentCreateRequestDto;
 import com.example.demo.controller.internal.api.dto.PaymentResponseDto;
@@ -30,7 +31,14 @@ import java.util.Optional;
 // -> 클래스에 @RestController 적으면 = 각각의 메서드에 @ResponseBody 안적어줘도됨
 @RequiredArgsConstructor
 public class PaymentController {
-    private final PaymentApplication paymentApplication;
+    /**
+     * Hexagonal (Port and Adaptor) 아키텍쳐 도입 시
+     *  - Controller <= Primary Adaptor = Driving Adaptor
+     *  - Application 인터페이스 <= Input Port
+     *  - Repository 인터페이스 <= Output Port
+     *  - Repository 구체클래스 <= Secondary Adaptor = Driven Adaptor
+     */
+    private final IPaymentApplication paymentApplication;
 
     @RequestMapping(method = RequestMethod.POST, value = "/internal/api/payments")
     public PaymentResponseDto payment(@RequestBody PaymentCreateRequestDto request) {

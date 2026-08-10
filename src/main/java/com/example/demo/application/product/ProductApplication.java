@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ProductApplication {
+public class ProductApplication implements IProductApplication {
     private final ProductService productService;
 
     public List<ProductResponseDto> retrieve() {

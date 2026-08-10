@@ -1,5 +1,6 @@
 package com.example.demo.service.payment;
 
+import com.example.demo.repository.IRepository;
 import com.example.demo.repository.payment.Payment;
 import com.example.demo.repository.payment.PaymentRepository;
 import com.example.demo.repository.payment.PaymentStatus;
@@ -31,7 +32,14 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
-    private final PaymentRepository paymentRepository;
+    /**
+     * Hexagonal (Port and Adaptor) 아키텍쳐 도입 시
+     *  - Controller <= Primary Adaptor = Driving Adaptor
+     *  - Application 인터페이스 <= Input Port
+     *  - Repository 인터페이스 <= Output Port
+     *  - Repository 구체클래스 <= Secondary Adaptor = Driven Adaptor
+     */
+    private final IRepository<Integer, Payment> paymentRepository;
 
     public Payment getPayment(Integer id) {
         Optional<Payment> wrappedPayment = paymentRepository.findById(id);
