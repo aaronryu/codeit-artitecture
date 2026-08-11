@@ -1,0 +1,19 @@
+// 멀티모듈 프로젝트에서 bootJar { enabled = true } + jar { enabled = false } 설정을 위해 해당 플러그인이 필요
+plugins {
+    id 'org.springframework.boot'
+}
+
+// 멀티모듈 프로젝트에서 core / domain 모듈은 그 자체로 독립적으로 실행 가능한 JAR 로 생성되지 않도록 방지
+bootJar { enabled = false } // 내장 Tomcat 포함하는 (바로 실행 가능한) JAR 생성 가능 여부
+jar { enabled = true }      // 순수 라이브러리성 (바로 실행 불가능한) JAR 생성 가능 여부 <- core / domain 은 다른 API 에 포함되는 서브 JAR
+
+dependencies {
+    // DB 데이터베이스 및 공통 도메인에서 사용할 라이브러리 설정
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // Spring Data JPA 내부 JDBC API 는 인터페이스로 어떤 데이터베이스를 사용해도 모두 커버되도록 설정되어있음
+    // - 아래에서 어떤 데이터베이스를 사용할지에 대한 JDBC API 인터페이스에 대한 구체클래스를 드라이버라 칭하며 사용할 DB 의 드라이버 설정
+    runtimeOnly 'org.postgresql:postgresql'   // - PostgreSQL 사용 시
+//  runtimeOnly 'com.mysql:mysql-connector-j' // -      MySQL 사용 시
+//	runtimeOnly 'com.h2database:h2'           // -         H2 사용 시
+//  testImplementation 'org.springframework.boot:spring-boot-starter-test' - 최상단 build.gradle 내 통합 테스트 라이브러리 기입했기 때문
+}

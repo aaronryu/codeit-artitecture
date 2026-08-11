@@ -1,38 +1,42 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '4.1.0'
-	id 'io.spring.dependency-management' version '1.1.7'
+//	플러그인 버전만 선언하고(적용은 안 함: apply false) 하위 멀티 모듈에서 공통적으로 꺼내 쓸 수 있도록
+	id 'org.springframework.boot' version '4.1.0' apply false
+	id 'io.spring.dependency-management' version '1.1.7' apply false
 }
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
+// 기존 단일 모듈 설정들을 모두 subprojects {} 내부로 넣어주면 된다 + apply plugin 설정만 추가하면 된다
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'io.spring.dependency-management'
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+	group = 'com.example'
+	version = '0.0.1-SNAPSHOT'
+
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(17)
+		}
 	}
-}
 
-repositories {
-	mavenCentral()
-}
+	repositories {
+		mavenCentral()
+	}
 
-dependencies {
-//	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
-//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	runtimeOnly 'org.postgresql:postgresql'
+	dependencies {
+//	    SLF4J 설정해야지 로그 출력 가능
+		implementation 'org.slf4j:slf4j-api:2.0.13'
+//	    implementation 'ch.qos.logback:logback-classic:1.5.13'
+//	    Lombok 사용해야지 매번 직접 코딩해야하는 메서드들을 코딩하지 않고 편하게 사용
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		testCompileOnly 'org.projectlombok:lombok'
+		testAnnotationProcessor 'org.projectlombok:lombok'
+//      JUnit 테스트 모듈도 다른 모든 모듈에서 공통적으로 사용해야하는 코드
+		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	}
 
-	//	SLF4J 설정해야지 로그 출력 가능
-	implementation 'org.slf4j:slf4j-api:2.0.13'
-	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
-	testCompileOnly 'org.projectlombok:lombok'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testAnnotationProcessor 'org.projectlombok:lombok'
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
 }

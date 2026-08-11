@@ -1,0 +1,21 @@
+// 멀티모듈 프로젝트에서 bootJar { enabled = true } + jar { enabled = false } 설정을 위해 해당 플러그인이 필요
+plugins {
+    id 'org.springframework.boot'
+}
+
+// 멀티모듈 프로젝트에서 external-api / internal-api 모듈은 그 자체로 독립적으로 실행 가능한 JAR 로만 생성되도록 좁게 제약
+bootJar { enabled = true } // 내장 Tomcat 포함하는 (바로 실행 가능한) JAR 생성 가능 여부 <- api 는 그 자체로 JVM 위 구동 가능한 JAR
+jar { enabled = false }    // 순수 라이브러리성 (바로 실행 불가능한) JAR 생성 가능 여부
+
+// * Admin 은 상품과 유저들을 조작할 수 있는 (위험한) API 뿐만 아니라 자체 페이지를 제공
+dependencies {
+//  공통 도메인들이 들어있는 core / domain 모듈을 가져와서 그 위에 차곡차곡 @Service, @Controller 들을 쌓아 빌드
+    implementation project(':codeit-core')
+//  core / domain 내 Spring Data JPA 라이브러리에서 자동 설정이 찾는 데이터베이스 설정을 제외시키기 위해 상위 모듈에서 명시해야한다
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+//	Spring MVC 기본
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+//  testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+//  testImplementation 'org.springframework.boot:spring-boot-starter-test' - 최상단 build.gradle 내 통합 테스트 라이브러리 기입했기 때문
+}
