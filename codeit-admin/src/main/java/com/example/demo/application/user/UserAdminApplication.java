@@ -5,7 +5,7 @@ import com.example.demo.controller.api.dto.UserAdminResponseDto;
 import com.example.demo.controller.api.dto.UserAdminUpdateRequestDto;
 import com.example.demo.repository.user.User;
 import com.example.demo.service.user.UserService;
-import com.example.demo.utils.MultipartFileUpload;
+import com.example.demo.multipart.MultipartFileUpload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

@@ -4,7 +4,7 @@ import com.example.demo.controller.api.dto.ProductAdminResponseDto;
 import com.example.demo.controller.api.dto.ProductAdminUpsertRequestDto;
 import com.example.demo.repository.product.Product;
 import com.example.demo.service.product.ProductService;
-import com.example.demo.utils.MultipartFileUpload;
+import com.example.demo.multipart.MultipartFileUpload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

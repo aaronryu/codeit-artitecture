@@ -5,6 +5,7 @@ rootProject.name = 'codeit-spring-tutorial'
  *  - JUnit + Spring Test 공통 테스트 라이브러리
  */
 
+include 'codeit-support:web'
 include 'codeit-core'
 /**
  * 여러분들이 어떤 API / WEB 개발하든간에 도메인이 가장 핵심이고 공통부분
