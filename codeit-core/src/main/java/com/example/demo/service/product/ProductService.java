@@ -1,6 +1,7 @@
 package com.example.demo.service.product;
 
-import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.exception.CodeitRuntimeException;
+import com.example.demo.exception.ExceptionType;
 import com.example.demo.repository.IRepository;
 import com.example.demo.repository.product.Product;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class ProductService {
     public Product getProduct(Integer id) {
         Optional<Product> wrappedProduct = productRepository.findById(id);
                  Product         product = wrappedProduct
-                         .orElseThrow(() -> new UserNotFoundException());
+                         .orElseThrow(() -> new CodeitRuntimeException(ExceptionType.USER_NOT_FOUND));
         return product;
     }
 

@@ -2,7 +2,8 @@ package com.example.demo.application.product;
 
 import com.example.demo.controller.api.dto.ProductAdminResponseDto;
 import com.example.demo.controller.api.dto.ProductAdminUpsertRequestDto;
-import com.example.demo.exception.DatabaseConnectionException;
+import com.example.demo.exception.CodeitRuntimeException;
+import com.example.demo.exception.ExceptionType;
 import com.example.demo.repository.product.Product;
 import com.example.demo.service.product.ProductService;
 import com.example.demo.multipart.MultipartFileUpload;
@@ -28,7 +29,7 @@ public class ProductAdminApplication {
 
     public ProductAdminResponseDto retrieve(Integer id) {
         if (true) { throw new RuntimeException("스프링 라이브러리에서 우리가 모르는 예외 발생"); }
-        if (false) { throw new DatabaseConnectionException(); } // 의도적으로 다른 타입의 예외를 발생시키기 위함 - true / false 바꿔가며 호출할것
+        if (false) { throw new CodeitRuntimeException(ExceptionType.DATABASE_CONNECTION_FAILED); } // 의도적으로 다른 타입의 예외를 발생시키기 위함 - true / false 바꿔가며 호출할것
         Product retrieved = productService.getProduct(id);
         return ProductAdminResponseDto.from(retrieved);
     }
