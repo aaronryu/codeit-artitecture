@@ -6,6 +6,8 @@ import com.example.demo.controller.api.dto.ProductAdminResponseDto;
 import com.example.demo.controller.api.dto.ProductAdminUpsertRequestDto;
 import com.example.demo.controller.api.dto.RequestingUserDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,11 +31,20 @@ public class ProductApiController {
         return productAdminApplication.retrieve();
     }
 
+    // 응답에 상태코드를 넣는 방법 2.
+    // 2. 직접 ResponseEntity 반환 객체를 만들어서 반환
     @RequestMapping(method = RequestMethod.GET, value = "/admin/api/products/{id}")
-    public ProductAdminResponseDto retrieve(@PathVariable Integer id) {
-        return productAdminApplication.retrieve(id);
+    public ResponseEntity<ProductAdminResponseDto> retrieve(@PathVariable Integer id) {
+        ProductAdminResponseDto response = productAdminApplication.retrieve(id);
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(response);
     }
 
+    // 응답에 상태코드를 넣는 방법 1.
+    // 1. 메서드 상단 어노테이션을 통해 명시 - 쉽지만 문제는 그 메서드에서 나가는 모든 응답에 그 상태코드가 들어감
+    // = 익셉션에 따른 다른 상태코드를 반환하고싶을때 어쩔도리가 없음
+    @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST, value = "/admin/api/products")
     public ProductAdminResponseDto create(
             @RequestPart ProductAdminUpsertRequestDto request,
