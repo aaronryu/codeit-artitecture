@@ -4,9 +4,12 @@ import com.example.demo.exception.CodeitRuntimeException;
 import com.example.demo.exception.ExceptionType;
 import com.example.demo.repository.IRepository;
 import com.example.demo.repository.product.Product;
+import com.sun.net.httpserver.HttpContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.net.HttpURLConnection;
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
 
