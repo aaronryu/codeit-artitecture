@@ -6,6 +6,7 @@ import com.example.demo.controller.api.dto.ProductAdminResponseDto;
 import com.example.demo.controller.api.dto.ProductAdminUpsertRequestDto;
 import com.example.demo.controller.api.dto.RequestingUserDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.List;
  *    : 쿠팡 내부 MD 직원들이나 개발자 등이 상품이나 유저를 등록하고 삭제하기 위함 = 어드민 기능
  *      - 그 중에서 "Product"ApiController 상품을 등록하고 삭제하기 위한 API
  */
+@Slf4j
 @RestController
 // 클래스에 @Controller 적고 + 각각의 메서드에 @ResponseBody 적어줬었는데 매번 메서드마다 해주기 번거로우니
 // -> 클래스에 @RestController 적으면 = 각각의 메서드에 @ResponseBody 안적어줘도됨
@@ -35,10 +37,17 @@ public class ProductApiController {
     // 2. 직접 ResponseEntity 반환 객체를 만들어서 반환
     @RequestMapping(method = RequestMethod.GET, value = "/admin/api/products/{id}")
     public ResponseEntity<ProductAdminResponseDto> retrieve(@PathVariable Integer id) {
-        ProductAdminResponseDto response = productAdminApplication.retrieve(id);
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(response);
+        try {
+            ProductAdminResponseDto response = productAdminApplication.retrieve(id);
+            return ResponseEntity
+                    .status(HttpStatus.ACCEPTED)
+                    .body(response);
+        } catch (RuntimeException e) {
+            log.error(e.getMessage(), e);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .build();
+        }
     }
 
     // 응답에 상태코드를 넣는 방법 1.
