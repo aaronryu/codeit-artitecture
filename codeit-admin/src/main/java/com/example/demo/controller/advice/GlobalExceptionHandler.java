@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
 //  @ResponseBody
-    public void handle(MethodArgumentNotValidException exception) {
+    public List<InvalidParameterDto> handle(MethodArgumentNotValidException exception) {
         List<InvalidParameterDto> parameterInvalidDetails = new ArrayList<>();
         for (FieldError eachParameterValidation : exception.getBindingResult().getFieldErrors()) {
             InvalidParameterDto eachParameterInvalidDetail = InvalidParameterDto.builder()
@@ -56,13 +56,14 @@ public class GlobalExceptionHandler {
             parameterInvalidDetails.add(eachParameterInvalidDetail);
         }
         log.warn("@RequestBody, @ModelAttribute 으로 받는 요청 DTO 객체 내 검증 실패 값이 존재 : {}", parameterInvalidDetails, exception);
+        return parameterInvalidDetails;
     }
 
 //  (1-2) @Controller 내 메서드에 @Min 그대로 적용 (알아서 처리해줌 - 간단한 객체에 대해)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HandlerMethodValidationException.class)
 //  @ResponseBody
-    public void handle(HandlerMethodValidationException exception) {
+    public List<InvalidParameterDto> handle(HandlerMethodValidationException exception) {
         List<InvalidParameterDto> parameterInvalidDetails = new ArrayList<>();
         for (ParameterValidationResult eachParameter : exception.getParameterValidationResults()) {
             InvalidParameterDto.InvalidParameterDtoBuilder eachParameterInvalidDetailBuilder = InvalidParameterDto.builder();
@@ -79,13 +80,14 @@ public class GlobalExceptionHandler {
             parameterInvalidDetails.add(eachParameterInvalidDetail);
         }
         log.warn("@PathVariable, @RequestParam 으로 받는 요청 간단한 객체(Integer 등) 내 검증 실패 값이 존재 : {}", parameterInvalidDetails, exception);
+        return parameterInvalidDetails;
     }
 
 //  (2) 아무 클래스에 @Validated + 아무 메서드 내 파라미터에 @Min
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
 //  @ResponseBody
-    public void handle(ConstraintViolationException exception) {
+    public List<InvalidParameterDto> handle(ConstraintViolationException exception) {
         List<InvalidParameterDto> parameterInvalidDetails = new ArrayList<>();
         for (ConstraintViolation eachParameterValidation : exception.getConstraintViolations()) {
             InvalidParameterDto eachParameterInvalidDetail = InvalidParameterDto.builder()
@@ -98,6 +100,7 @@ public class GlobalExceptionHandler {
             parameterInvalidDetails.add(eachParameterInvalidDetail);
         }
         log.warn("@Service, @Repository 등의 기타 클래스 내 메서드 파라미터들에 대한 검증 실패 값이 존재 : {}", parameterInvalidDetails, exception);
+        return parameterInvalidDetails;
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
