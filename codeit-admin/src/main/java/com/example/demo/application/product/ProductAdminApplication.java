@@ -7,8 +7,10 @@ import com.example.demo.exception.ExceptionType;
 import com.example.demo.repository.product.Product;
 import com.example.demo.service.product.ProductService;
 import com.example.demo.multipart.MultipartFileUpload;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Validated
 public class ProductAdminApplication {
     private final ProductService productService;
     private final MultipartFileUpload multipartFileUpload;
@@ -27,7 +30,7 @@ public class ProductAdminApplication {
                 .toList();
     }
 
-    public ProductAdminResponseDto retrieve(Integer id) {
+    public ProductAdminResponseDto retrieve(@Min(1) Integer id) {
         if (true) { throw new RuntimeException("스프링 라이브러리에서 우리가 모르는 예외 발생"); }
         if (false) { throw new CodeitRuntimeException(ExceptionType.DATABASE_CONNECTION_FAILED); } // 의도적으로 다른 타입의 예외를 발생시키기 위함 - true / false 바꿔가며 호출할것
         Product retrieved = productService.getProduct(id);

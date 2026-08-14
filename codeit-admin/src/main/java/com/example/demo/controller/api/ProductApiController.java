@@ -8,10 +8,12 @@ import com.example.demo.controller.api.dto.RequestingUserDto;
 import com.example.demo.exception.CodeitRuntimeException;
 import com.example.demo.exception.ExceptionType;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,7 +65,7 @@ public class ProductApiController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/admin/api/products/{id}")
     public ProductAdminResponseDto update(
-            @PathVariable Integer id,
+            @PathVariable @Min(1) Integer id,
             @RequestPart ProductAdminUpsertRequestDto request,
             @RequestPart(required = false) MultipartFile thumbnail
     ) {
