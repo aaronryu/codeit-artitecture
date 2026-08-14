@@ -12,6 +12,7 @@ public class UserAdminResponseDto {
     private final String name;
     private final UserGrade grade;
     private final int point;
+    private final String thumbnail;
     private final boolean deleted;
 
     public static UserAdminResponseDto from(User entity) {
@@ -20,6 +21,7 @@ public class UserAdminResponseDto {
                 entity.getName(),
                 entity.getGrade(),
                 entity.getPoint(),
+                entity.getThumbnail(),
                 entity.isDeleted()
         );
     }

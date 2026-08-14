@@ -6,9 +6,9 @@ import com.example.demo.controller.api.dto.RequestingUserDto;
 import com.example.demo.controller.api.dto.UserAdminCreateRequestDto;
 import com.example.demo.controller.api.dto.UserAdminResponseDto;
 import com.example.demo.controller.api.dto.UserAdminUpdateRequestDto;
-import com.example.demo.repository.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -36,16 +36,22 @@ public class UserApiController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/admin/api/users")
-    public UserAdminResponseDto create(@RequestBody UserAdminCreateRequestDto request) {
-        User creating = request.to();
-        return userAdminApplication.create(creating);
+    public UserAdminResponseDto create(
+            @RequestPart UserAdminCreateRequestDto request,
+            @RequestPart(required = false) MultipartFile thumbnail
+    ) {
+        return userAdminApplication.create(request, thumbnail);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/admin/api/users/{id}")
-    public UserAdminResponseDto update(@PathVariable Integer id, @RequestBody UserAdminUpdateRequestDto request) {
+    public UserAdminResponseDto update(
+            @PathVariable Integer id,
+            @RequestPart UserAdminUpdateRequestDto request,
+            @RequestPart(required = false) MultipartFile thumbnail
+    ) {
         Integer requestedUserId = request.getRequestUserId();
         try (UserContext.ContextScope ignored = UserContext.withUser(requestedUserId)) {
-            return userAdminApplication.update(id, request);
+            return userAdminApplication.update(id, request, thumbnail);
         }
     }
 

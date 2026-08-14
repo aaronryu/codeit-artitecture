@@ -15,6 +15,7 @@ public class User extends BaseEntity {
     private String name;
     private UserGrade grade = UserGrade.BRONZE;
     private int point = 0;
+    private String thumbnail;
 
     private User(Integer id, String name, Integer userId) {
         super(id, userId);
@@ -24,6 +25,10 @@ public class User extends BaseEntity {
     public static User create(String name, /* 누가 유저를 생성했는지 */ Integer userId) {
         int generatedId = idGenerate();
         return new User(generatedId, name, userId);
+    }
+
+    public void upload(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public void update(String name, UserGrade grade, int point) {

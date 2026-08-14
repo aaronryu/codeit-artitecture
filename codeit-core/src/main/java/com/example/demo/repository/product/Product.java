@@ -15,6 +15,7 @@ public class Product extends BaseEntity {
     private String name;
     private int price;
     private int stock;
+    private String thumbnail;
 
     private Product(Integer id, String name, int price, int stock, Integer userId) {
         super(id, userId);
@@ -26,6 +27,10 @@ public class Product extends BaseEntity {
     public static Product create(String name, int price, int stock, /* 누가 상품을 생성했는지 */  Integer userId) {
         int generatedId = idGenerate();
         return new Product(generatedId, name, price, stock, userId);
+    }
+
+    public void upload(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public void update(String name, int price, int stock) {

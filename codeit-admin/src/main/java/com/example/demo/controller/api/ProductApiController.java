@@ -5,9 +5,9 @@ import com.example.demo.common.context.UserContext;
 import com.example.demo.controller.api.dto.ProductAdminResponseDto;
 import com.example.demo.controller.api.dto.ProductAdminUpsertRequestDto;
 import com.example.demo.controller.api.dto.RequestingUserDto;
-import com.example.demo.repository.product.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -35,16 +35,22 @@ public class ProductApiController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/admin/api/products")
-    public ProductAdminResponseDto create(@RequestBody ProductAdminUpsertRequestDto request) {
-        Product creating = request.to();
-        return productAdminApplication.create(creating);
+    public ProductAdminResponseDto create(
+            @RequestPart ProductAdminUpsertRequestDto request,
+            @RequestPart(required = false) MultipartFile thumbnail
+    ) {
+        return productAdminApplication.create(request, thumbnail);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/admin/api/products/{id}")
-    public ProductAdminResponseDto update(@PathVariable Integer id, @RequestBody ProductAdminUpsertRequestDto request) {
+    public ProductAdminResponseDto update(
+            @PathVariable Integer id,
+            @RequestPart ProductAdminUpsertRequestDto request,
+            @RequestPart(required = false) MultipartFile thumbnail
+    ) {
         Integer requestedUserId = request.getRequestUserId();
         try (UserContext.ContextScope ignored = UserContext.withUser(requestedUserId)) {
-            return productAdminApplication.update(id, request);
+            return productAdminApplication.update(id, request, thumbnail);
         }
     }
 

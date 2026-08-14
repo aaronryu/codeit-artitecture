@@ -11,6 +11,7 @@ public class ProductAdminResponseDto {
     private final String name;
     private final int price;
     private final int stock;
+    private final String thumbnail;
     private final boolean deleted;
 
     public static ProductAdminResponseDto from(Product entity) {
@@ -19,6 +20,7 @@ public class ProductAdminResponseDto {
                 entity.getName(),
                 entity.getPrice(),
                 entity.getStock(),
+                entity.getThumbnail(),
                 entity.isDeleted()
         );
     }
