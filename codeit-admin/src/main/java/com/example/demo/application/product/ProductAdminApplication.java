@@ -2,6 +2,7 @@ package com.example.demo.application.product;
 
 import com.example.demo.controller.api.dto.ProductAdminResponseDto;
 import com.example.demo.controller.api.dto.ProductAdminUpsertRequestDto;
+import com.example.demo.exception.DatabaseConnectionException;
 import com.example.demo.repository.product.Product;
 import com.example.demo.service.product.ProductService;
 import com.example.demo.multipart.MultipartFileUpload;
@@ -26,6 +27,7 @@ public class ProductAdminApplication {
     }
 
     public ProductAdminResponseDto retrieve(Integer id) {
+        if (true) { throw new DatabaseConnectionException(); } // 의도적으로 다른 타입의 예외를 발생시키기 위함 - true / false 바꿔가며 호출할것
         Product retrieved = productService.getProduct(id);
         return ProductAdminResponseDto.from(retrieved);
     }

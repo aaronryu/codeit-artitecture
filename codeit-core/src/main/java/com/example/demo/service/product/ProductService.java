@@ -1,5 +1,6 @@
 package com.example.demo.service.product;
 
+import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.repository.IRepository;
 import com.example.demo.repository.product.Product;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class ProductService {
     public Product getProduct(Integer id) {
         Optional<Product> wrappedProduct = productRepository.findById(id);
                  Product         product = wrappedProduct
-                         .orElseThrow(() -> new RuntimeException("찾으시는 유저가 존재하지 않습니다"));
+                         .orElseThrow(() -> new UserNotFoundException());
         return product;
     }
 

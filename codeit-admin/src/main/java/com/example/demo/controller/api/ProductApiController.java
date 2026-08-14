@@ -42,7 +42,7 @@ public class ProductApiController {
             return ResponseEntity
                     .status(HttpStatus.ACCEPTED)
                     .body(response);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException e /* 클래스 다형성에 의해 우리가 만드는 예외 Exception 들이 모두 RuntimeException 상속받기에 여기로 다 들어옴 */) {
             log.error(e.getMessage(), e);
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
