@@ -19,6 +19,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 //  testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 //  testImplementation 'org.springframework.boot:spring-boot-starter-test' - 최상단 build.gradle 내 통합 테스트 라이브러리 기입했기 때문
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 //	Thymeleaf 사용해야지 /resources/templates/ 디렉토리 내부에 있는 ViewTemplate 파일들을 통해 페이지 생성 및 반환 가능
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

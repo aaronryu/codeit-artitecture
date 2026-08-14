@@ -7,6 +7,7 @@ import com.example.demo.controller.api.dto.ProductAdminUpsertRequestDto;
 import com.example.demo.controller.api.dto.RequestingUserDto;
 import com.example.demo.exception.CodeitRuntimeException;
 import com.example.demo.exception.ExceptionType;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -66,13 +67,34 @@ public class ProductApiController {
     // 응답에 상태코드를 넣는 방법 1.
     // 1. 메서드 상단 어노테이션을 통해 명시 - 쉽지만 문제는 그 메서드에서 나가는 모든 응답에 그 상태코드가 들어감
     // = 익셉션에 따른 다른 상태코드를 반환하고싶을때 어쩔도리가 없음
-    @ResponseStatus(HttpStatus.CREATED)
+//  @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST, value = "/admin/api/products")
-    public ProductAdminResponseDto create(
-            @RequestPart ProductAdminUpsertRequestDto request,
+    public ResponseEntity<ProductAdminResponseDto> create(
+            @RequestPart @Valid ProductAdminUpsertRequestDto request,
             @RequestPart(required = false) MultipartFile thumbnail
     ) {
-        return productAdminApplication.create(request, thumbnail);
+        try {
+            ProductAdminResponseDto response = productAdminApplication.create(request, thumbnail);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(response);
+        } catch (CodeitRuntimeException exception) {
+            // 내가 알고있거나 / 명시적으로 처리하고싶어하는 예외 상황에 대해 이렇게 구체적인 예외 클래스를 명시해서 처리
+            ExceptionType exceptionType = exception.getType();
+            log.makeLoggingEventBuilder(exceptionType.getLevel())
+                    .setCause(exception)
+                    .log(exception.getMessage());
+            return ResponseEntity
+                    .status(exceptionType.getStatus())
+                    .build();
+        } catch (RuntimeException e /* 클래스 다형성에 의해 우리가 만드는 예외 Exception 들이 모두 RuntimeException 상속받기에 여기로 다 들어옴 */) {
+            // 세상에는 (라이브러리, 프레임워크 등) 너무 다양한 예외들이 존재하기에 우리가 catch 하지 못하고 놓친 예외에 대해 꼭 마지막까지 처리해줘야한다
+            // = switch 구문에서 default 와 거의 같은 목적의 코드라고 보면 된다
+            log.error("우리가 커버하지 못한 예외 발생", e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .build();
+        }
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/admin/api/products/{id}")
