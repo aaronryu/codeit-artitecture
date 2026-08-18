@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class CodeitRuntimeException extends RuntimeException {
-    private final ExceptionType type;
+    private final CodeitExceptionType type;
 
-    public CodeitRuntimeException(ExceptionType type) {
+    public CodeitRuntimeException(CodeitExceptionType type) {
         super(type.getMessage());
         this.type = type;
     }

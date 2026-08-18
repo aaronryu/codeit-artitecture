@@ -17,7 +17,8 @@ import java.util.UUID;
 public class MultipartFileLocalUpload extends MultipartFileAbstractUpload {
     private final String directory;
 
-    public MultipartFileLocalUpload(@Value("${file.upload-directory}") String directory) {
+    public MultipartFileLocalUpload(@Value("${file.upload-directory:default}") String directory) {
+        /* FIXME : 만약 개발자가 codeit-support:web 서브 모듈을 사용하려하는데, MultipartFileUpload 가 필요앖다면 @Value 디렉토리 설정을 하지 않았을때 해당 Bean 이 생성되지 않게하거나 DefaultBean 생성하도록 개발 수정 필요 */
         this.directory = directory;
     }
 

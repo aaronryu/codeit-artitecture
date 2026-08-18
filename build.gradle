@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
 //	플러그인 버전만 선언하고(적용은 안 함: apply false) 하위 멀티 모듈에서 공통적으로 꺼내 쓸 수 있도록
 	id 'org.springframework.boot' version '4.1.0' apply false
@@ -8,6 +10,12 @@ plugins {
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'io.spring.dependency-management'
+
+	dependencyManagement {
+		imports {
+			mavenBom SpringBootPlugin.BOM_COORDINATES
+		}
+	}
 
 	group = 'com.example'
 	version = '0.0.1-SNAPSHOT'

@@ -8,10 +8,4 @@ bootJar { enabled = false } // 내장 Tomcat 포함하는 (바로 실행 가능�
 jar { enabled = true }      // 순수 라이브러리성 (바로 실행 불가능한) JAR 생성 가능 여부 <- core / domain 은 다른 API 에 포함되는 서브 JAR
 
 dependencies {
-    implementation project(":codeit-common")
-//	Spring MVC 기본
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-//  testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
-//  testImplementation 'org.springframework.boot:spring-boot-starter-test' - 최상단 build.gradle 내 통합 테스트 라이브러리 기입했기 때문
 }

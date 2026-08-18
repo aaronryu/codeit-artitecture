@@ -1,17 +1,15 @@
-package com.example.demo.controller.advice;
+package com.example.demo.advice;
 
-import com.example.demo.controller.advice.dto.InvalidParameterDto;
+import com.example.demo.advice.dto.InvalidParameterDto;
+import com.example.demo.exception.CodeitExceptionType;
 import com.example.demo.exception.CodeitRuntimeException;
-import com.example.demo.exception.ExceptionType;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSourceResolvable;
-import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.method.ParameterValidationResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +28,7 @@ public class GlobalExceptionHandler {
 //  @ResponseBody
     public ResponseEntity<Void> handle(CodeitRuntimeException exception) {
         // 내가 알고있거나 / 명시적으로 처리하고싶어하는 예외 상황에 대해 이렇게 구체적인 예외 클래스를 명시해서 처리
-        ExceptionType exceptionType = exception.getType();
+        CodeitExceptionType exceptionType = exception.getType();
         log.makeLoggingEventBuilder(exceptionType.getLevel())
                 .setCause(exception)
                 .log(exception.getMessage());

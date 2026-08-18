@@ -1,4 +1,4 @@
-package com.example.demo.controller.advice.dto;
+package com.example.demo.advice.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
