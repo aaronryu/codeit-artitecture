@@ -1,5 +1,6 @@
 package com.example.demo.controller.api;
 
+import com.example.demo.advice.dto.ApiResponse;
 import com.example.demo.application.product.ProductAdminApplication;
 import com.example.demo.common.context.UserContext;
 import com.example.demo.controller.api.dto.ProductAdminResponseDto;
@@ -33,69 +34,86 @@ import java.util.List;
 public class ProductApiController {
     private final ProductAdminApplication productAdminApplication;
 
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.GET, value = "/admin/api/products")
-    public List<ProductAdminResponseDto> retrieve() {
-        return productAdminApplication.retrieve();
+    public ApiResponse<List<ProductAdminResponseDto>> retrieve() {
+//  public ResponseEntity<List<ProductAdminResponseDto>> retrieve() {
+//      List<ProductAdminResponseDto> response = productAdminApplication.retrieve();
+//      return ResponseEntity
+//              .status(HttpStatus.OK)
+//              .body(response);
+        List<ProductAdminResponseDto> response = productAdminApplication.retrieve();
+        return ApiResponse.success(response);
     }
 
     // 응답에 상태코드를 넣는 방법 2.
     // 2. 직접 ResponseEntity 반환 객체를 만들어서 반환
     @RequestMapping(method = RequestMethod.GET, value = "/admin/api/products/{id}")
-    public ResponseEntity<ProductAdminResponseDto> retrieve(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<ProductAdminResponseDto>> retrieve(@PathVariable Integer id) {
         ProductAdminResponseDto response = productAdminApplication.retrieve(id);
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(response);
+                .body(ApiResponse.success(response));
     }
 
     // 응답에 상태코드를 넣는 방법 1.
     // 1. 메서드 상단 어노테이션을 통해 명시 - 쉽지만 문제는 그 메서드에서 나가는 모든 응답에 그 상태코드가 들어감
     // = 익셉션에 따른 다른 상태코드를 반환하고싶을때 어쩔도리가 없음
-//  @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST, value = "/admin/api/products")
-    public ResponseEntity<ProductAdminResponseDto> create(
+    public ApiResponse<ProductAdminResponseDto> create(
             @RequestPart @Valid ProductAdminUpsertRequestDto request,
             @RequestPart(required = false) MultipartFile thumbnail
     ) {
+//      ProductAdminResponseDto response = productAdminApplication.create(request, thumbnail);
+//      return ResponseEntity
+//              .status(HttpStatus.CREATED)
+//              .body(response);
         ProductAdminResponseDto response = productAdminApplication.create(request, thumbnail);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(response);
+        return ApiResponse.success(response);
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(method = RequestMethod.PUT, value = "/admin/api/products/{id}")
-    public ProductAdminResponseDto update(
+    public ApiResponse<ProductAdminResponseDto> update(
             @PathVariable @Min(1) Integer id,
             @RequestPart ProductAdminUpsertRequestDto request,
             @RequestPart(required = false) MultipartFile thumbnail
     ) {
         Integer requestedUserId = request.getRequestUserId();
         try (UserContext.ContextScope ignored = UserContext.withUser(requestedUserId)) {
-            return productAdminApplication.update(id, request, thumbnail);
+            ProductAdminResponseDto response = productAdminApplication.update(id, request, thumbnail);
+            return ApiResponse.success(response);
         }
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(method = RequestMethod.PATCH, value = "/admin/api/products/{id}/active")
-    public void active(@PathVariable Integer id, @RequestBody RequestingUserDto request) {
+    public ApiResponse<Void> active(@PathVariable Integer id, @RequestBody RequestingUserDto request) {
         Integer requestedUserId = request.getRequestUserId();
         try (UserContext.ContextScope ignored = UserContext.withUser(requestedUserId)) {
             productAdminApplication.active(id);
+            return ApiResponse.success();
         }
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(method = RequestMethod.PATCH, value = "/admin/api/products/{id}/soft-delete")
-    public void softDelete(@PathVariable Integer id, @RequestBody RequestingUserDto request) {
+    public ApiResponse<Void> softDelete(@PathVariable Integer id, @RequestBody RequestingUserDto request) {
         Integer requestedUserId = request.getRequestUserId();
         try (UserContext.ContextScope ignored = UserContext.withUser(requestedUserId)) {
             productAdminApplication.softDelete(id);
+            return ApiResponse.success();
         }
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(method = RequestMethod.DELETE, value = "/admin/api/products/{id}/hard-delete")
-    public void hardDelete(@PathVariable Integer id, @RequestBody RequestingUserDto request) {
+    public ApiResponse<Void> hardDelete(@PathVariable Integer id, @RequestBody RequestingUserDto request) {
         Integer requestedUserId = request.getRequestUserId();
         try (UserContext.ContextScope ignored = UserContext.withUser(requestedUserId)) {
             productAdminApplication.hardDelete(id);
+            return ApiResponse.success();
         }
     }
 }
